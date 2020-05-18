@@ -12,6 +12,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 import "./util/flexible.js"
 import "./assets/base.styl"
 import "@/assets/fonts/iconfont.css"
+import "swiper/css/swiper.css"
 Vue.use(ElementUI);
 Vue.use(Vant);
 
