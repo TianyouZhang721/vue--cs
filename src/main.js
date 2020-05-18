@@ -11,6 +11,7 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import "./util/flexible.js"
 import "./assets/base.styl"
+import "@/assets/fonts/iconfont.css"
 Vue.use(ElementUI);
 Vue.use(Vant);
 

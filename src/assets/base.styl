@@ -1,6 +1,8 @@
 color = #fe9900
 color2 = #ea2222
 color3 = #1c84a7
+#app 
+    font-size px2rem(30px)
 // 函数作用，传进来一个px，返回一个rem，如果设计稿是375宽，除以37.5，如果是750宽除以75
 px2rem(px)
     (px / 75px * 1)rem
@@ -10,4 +12,4 @@ li
 html, body, div, ul, li, p, h1, h2, h3, img, header, main, footer 
     margin 0
     padding 0
-
+    box-sizing: border-box
