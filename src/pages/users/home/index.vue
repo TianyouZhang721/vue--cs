@@ -9,8 +9,19 @@
                 </div>
             </div>
         </div>
+        <div class="list">
+            <ul>
+                <li v-for="(item, index) in searchList" :key="item._id">
+                    <div class="img-box">
+                        <img :src="'http://localhost:3000' + item.imgurl" alt="">
+                    </div>
+                    <p>￥ {{ item.price }}</p>
+                    <p>{{ item.title }}</p>
+                </li>
+            </ul>
+        </div>
         <div class="search-box">
-            <input type="text">
+            <input type="text" @input="search" v-model="keywords">
             <i class="iconfont icon-sousuo"></i>
         </div>
     </div>
@@ -33,7 +44,9 @@
     export default {
         data() {
             return {
-                banners: []
+                banners: [],
+                keywords: "",
+                searchList: []
             }
         },
         mounted() {
@@ -56,11 +69,26 @@
 
             })
         },
+        methods: {
+            search() {
+                if (!this.keywords) {
+                    return
+                }
+                this.$http.get("/api/goodssearch?keywords=" + this.keywords).then(res => {
+                    console.log(res)
+                    this.searchList = res.data.info
+                })
+            }
+        }
     }
 </script>
 
 <style lang="stylus" scoped>
-
+.home-container 
+    display flex
+    flex-direction column
+    width 100%
+    height 100%
 .banner 
     width 100%
     height px2rem(470px)
@@ -92,4 +120,27 @@
         top 50%
         transform translateY(-50%)
         font-size px2rem(50px)
+.list 
+    flex 1
+    background-color #f9fafb
+    ul 
+        display flex
+        flex-wrap wrap
+        justify-content space-between
+        padding px2rem(20px)
+        li 
+            width px2rem(328px)
+            height px2rem(426px)
+            border px2rem(1px) solid #eee
+            background #fff
+            .img-box 
+                width px2rem(186px)
+                height px2rem(286px)
+                margin 0 auto
+                img 
+                    width 100%
+                    height 100%
+            p 
+                padding-left px2rem(20px)
+                margin-top px2rem(10px)
 </style>
