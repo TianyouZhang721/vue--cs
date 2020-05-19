@@ -15,31 +15,33 @@
             <div class="count-box">
                 <p>购买数量</p>
                 <div>
-                    <div>-</div>
-                    <span>1</span>
-                    <div>+</div>
+                    <div @click="jian">-</div>
+                    <span>{{ count }}</span>
+                    <div @click="jia">+</div>
                 </div>
             </div>
             <div class="size">
                 <p>大小</p>
                 <div>
-                    <span>4.7</span>
-                    <span>5.5</span>
-                    <span>6.1</span>
+                    <span 
+                    v-for="(item, index) in sizeArr" 
+                    :key="index" 
+                    :class="{'active': item == size}"
+                    @click="changeSize(item)"
+                    >{{item}}</span>
                 </div>
             </div>
             <div class="color">
                 <p>颜色</p>
                 <div>
-                    <span>土豪金</span>
-                    <span>星空灰</span>
-                    <span>玫瑰金</span>
+                    <span v-for="(item, i) in  colorArr" :key="i" :class="{'active': item == color}" @click="changeColor(item)">土豪金</span>
+
                 </div>
             </div>
             </main>
             <footer>
                 <div class="total-price">
-                    总价：￥
+                    总价：￥{{detail.price * count}}
                 </div>
                 <div class="btns">
                     <div class="addCart" @click="addCart">加入购物车</div>
@@ -55,6 +57,15 @@ import Vue from 'vue';
 import { Toast } from 'vant';
 Vue.use(Toast);
     export default {
+        data() {
+            return {
+                count: 1,
+                sizeArr:[5.4,4.7,6.1],
+                colorArr: ["土豪金", "玫瑰金","渣渣辉"],
+                size: "",
+                color: ""
+            }
+        },
         computed: {
             show: {
                 get() {
@@ -68,16 +79,43 @@ Vue.use(Toast);
         },
         props: ["detail"],
         methods: {
+            changeSize(item) {
+                this.size = item
+            },
+            changeColor(item) {
+                this.color = item
+            },
+            jian() {
+                if(this.count == 1) return
+                this.count--
+            },
+            jia() {
+                this.count++
+            },
             addCart() {
                 // 先判断是否为登录状态
                 if (!sessionStorage.getItem("id")) {
-                    Toast('请先登录，一秒后会自动跳到登录页');
+                    Toast.fail('请先登录，一秒后会自动跳到登录页');
                     setTimeout(() => {
                         this.$router.push("/login")
                     }, 1000)
+                    return
                 }
                 // 在判断规则是否有选中
-                
+                if(!this.size || !this.color) {
+                    Toast.fail('请选择商品规格');
+                    return 
+                }
+                this.$http.post("/api/cartadd", {
+                    userid: sessionStorage.getItem("id"),
+                    goodsid: this.detail._id,
+                    goods_num: this.count
+                }).then(res => {
+                    console.log(res)
+                    if (res.data.status == 1) {
+                        this.$store.dispatch("getCartList")
+                    }
+                })
             }
         }
     }
@@ -140,6 +178,9 @@ Vue.use(Toast);
                 color #666
                 margin-right px2rem(10px)
                 border-radius px2rem(10px)
+                &.active 
+                    background-color color 
+                    color #fff
     .color
         padding 0 px2rem(20px)
         width 100%
@@ -151,6 +192,9 @@ Vue.use(Toast);
                 color #666
                 margin-right px2rem(10px)
                 border-radius px2rem(10px)
+                &.active 
+                    background-color color 
+                    color #fff
     footer 
         height px2rem(100px)
         display flex

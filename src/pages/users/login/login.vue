@@ -39,5 +39,17 @@
 </script>
 
 <style lang="stylus" scoped>
-
+main 
+    padding 0 px2rem(100px)
+    padding-top px2rem(200px)
+    .van-cell
+        padding px2rem(30px) 0
+        .van-field__body 
+            height 100%
+    .van-button
+        width 100%
+        background-color color
+        border none
+        outline none
+        margin-top px2rem(30px)
 </style>

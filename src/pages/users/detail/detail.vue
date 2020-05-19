@@ -35,7 +35,7 @@
         </main>
         <footer>
             <div class="total-price">
-                总价：￥
+                总价：￥ {{ detail.price }}
             </div>
             <div class="btns">
                 <div class="addCart" @click="addCart">加入购物车</div>
@@ -43,6 +43,10 @@
             </div>
         </footer>
         <Prop :detail="detail"></Prop>
+        <div class="cart">
+            <i class="iconfont icon-gouwuche"></i>
+            <span>{{ cartList.length }}</span>
+        </div>
     </div>
 </template>
 
@@ -65,10 +69,17 @@
                 console.log(res)
                 this.detail = res.data.data
             })
+
+            this.$store.dispatch("getCartList")
         },
         methods: {
             addCart() {
                 this.$store.commit("changeShow", true)
+            }
+        },
+        computed: {
+            cartList() {
+                return this.$store.state.cartList
             }
         }
     }
@@ -138,4 +149,26 @@
                 background-color color2
                 text-align center
                 color #fff
+    .cart 
+        position fixed
+        top px2rem(50px)
+        right px2rem(50px)
+        width px2rem(80px)
+        height px2rem(80px)
+        border-radius px2rem(40px)
+        font-size px2rem(34px)
+        background-color rgba(0,0,0, .5)
+        color #fff
+        text-align center
+        line-height px2rem(80px)
+        span 
+            position absolute 
+            width px2rem(40px)
+            height px2rem(40px)
+            background-color color2
+            border-radius 50%
+            right px2rem(-5px)
+            top px2rem(-5px)
+            line-height px2rem(40px)
+            text-align center
 </style>
