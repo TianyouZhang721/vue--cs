@@ -1,7 +1,7 @@
 <template>
     <div class="right">
         <ul v-if="list && list.length > 0">
-            <li v-for="(item,index) in list[ind].children" :key="index">
+            <li v-for="(item,index) in list[ind].children" :key="index" @click="goDetail(item._id)">
                 <div class="box">
                     <div class="img-box">
                         <img :src="'http://localhost:3000' + item.imgurl" alt="">
@@ -31,6 +31,11 @@
                 return this.$store.state.ind
             }
         },
+        methods: {
+            goDetail(id) {
+                this.$router.push("/detail?id=" + id)
+            }
+        }
     }
 </script>
 
