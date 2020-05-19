@@ -42,7 +42,7 @@
                 <div class="buy">立即购买</div>
             </div>
         </footer>
-        <Prop></Prop>
+        <Prop :detail="detail"></Prop>
     </div>
 </template>
 

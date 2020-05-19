@@ -1,6 +1,6 @@
 <template>
     <div class="classify">
-        <Header></Header>
+        <Header :title="'分类'"></Header>
         <main>
             <ClassifyLeft />
             <ClassifyRight></ClassifyRight>
