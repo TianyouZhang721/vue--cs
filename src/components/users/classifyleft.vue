@@ -18,12 +18,11 @@
         data() {
             return {
                 classifyList: [],
-                ind: 0
             }
         },
         methods: {
             changeTab(i) {
-                this.ind = i
+                this.$store.commit("changeInd", i)
             }
         },
         mounted() {
@@ -31,6 +30,11 @@
                 console.log(res)
                 this.classifyList = res.data.data
             })
+        },
+        computed: {
+            ind() {
+                return this.$store.state.ind
+            }
         },
     }
 </script>
