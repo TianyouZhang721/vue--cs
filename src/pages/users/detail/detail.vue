@@ -38,18 +38,24 @@
                 总价：￥
             </div>
             <div class="btns">
-                <div class="addCart">加入购物车</div>
+                <div class="addCart" @click="addCart">加入购物车</div>
                 <div class="buy">立即购买</div>
             </div>
         </footer>
+        <Prop></Prop>
     </div>
 </template>
 
 <script>
+    import Prop from '@/components/users/propup'
     export default {
+        components: {
+            Prop
+        },
         data() {
             return {
-                detail: {}
+                detail: {},
+                // show: false
             }
         },
         mounted() {
@@ -60,6 +66,11 @@
                 this.detail = res.data.data
             })
         },
+        methods: {
+            addCart() {
+                this.$store.commit("changeShow", true)
+            }
+        }
     }
 </script>
 
