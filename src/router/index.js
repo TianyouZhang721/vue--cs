@@ -8,11 +8,17 @@ import Index from '@/pages/users/home/index'
 import Classify from '@/pages/users/home/classify'
 import Cart from '@/pages/users/home/cart'
 import My from '@/pages/users/home/my'
-
+import Admin from '@/pages/admin/admin'
+import AdminHome from '@/pages/admin/home'
+import AdminUser from '@/pages/admin/adminuser'
+import Member from '@/pages/admin/member'
+import ProductManage from '@/pages/admin/productmanage'
+import ClassifyManage from '@/pages/admin/classifymanage'
 Vue.use(Router)
 
 export default new Router({
   routes: [
+    // 手机端的
     {
       path: "/",
       redirect: "/home"
@@ -50,6 +56,33 @@ export default new Router({
     {
       path: "/register",
       component: Register
+    },
+    // pc端路由
+    {
+      path: "/admin",
+      component: Admin,
+      children: [
+        {
+          path: "home",
+          component: AdminHome
+        },
+        {
+          path: "adminuser",
+          component: AdminUser
+        },
+        {
+          path: "member",
+          component: Member
+        },
+        {
+          path: "classifymanage",
+          component: ClassifyManage
+        },
+        {
+          path: "productmanage",
+          component: ProductManage
+        }
+      ]
     }
   ]
 })
