@@ -14,6 +14,11 @@
             <span>注册</span>
             <span>登录</span>
         </div>
+        <div class="cart-header" v-if="title == '购物车'">
+            <i class="iconfont icon-houtui"></i>
+            <span>购物车</span>
+            <span></span>
+        </div>
     </header>
 </template>
 
@@ -50,6 +55,13 @@ header
         font-size px2rem(50px)
 
 .login-header 
+    display flex
+    justify-content space-between;
+    line-height px2rem(88px)
+    color #fff
+    padding 0 px2rem(20px)
+
+.cart-header 
     display flex
     justify-content space-between;
     line-height px2rem(88px)

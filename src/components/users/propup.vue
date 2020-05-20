@@ -111,7 +111,6 @@ Vue.use(Toast);
                     goodsid: this.detail._id,
                     goods_num: this.count
                 }).then(res => {
-                    console.log(res)
                     if (res.data.status == 1) {
                         this.$store.dispatch("getCartList")
                     }

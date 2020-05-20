@@ -28,6 +28,16 @@ export default new Vuex.Store({
                 console.log(res)
                 context.commit("getCartList", res.data.data)
             })
+        },
+        // 修改购物车接口
+        changeCartList(context, obj) {
+            axios.post("/api/cartedit", {
+                userid: sessionStorage.getItem("id"),
+                goodsid: obj.goodsid,
+                checked:obj.checked,
+            }).then(res => {
+                console.log(res)
+            })
         }
     }
 })
