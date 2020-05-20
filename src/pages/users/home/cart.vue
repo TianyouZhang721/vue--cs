@@ -4,7 +4,7 @@
         <main>
             <section>
                 <ul>
-                    <li v-for="(item, index) in cartList" :key="item._id">
+                    <li v-for="(item, index) in cartList" :key="item._id" v-swipe>
                         <i 
                         :class="['iconfont icon-quanxuan', item.checked?'active':'']"
                         @click="checkOne(item)"
@@ -13,18 +13,19 @@
                         <div class="detail">
                             <p>{{ item.goods_title }}</p>
                             <div class="count-box">
-                                <div>-</div>
+                                <div @click="jian(item)">-</div>
                                 <div>{{ item.goods_num }}</div>
-                                <div>+</div>
+                                <div @click="jia(item)">+</div>
                             </div>
                         </div>
-                        <p>{{ item.goods_price}}</p>
+                        <p>{{ item.goods_price * item.goods_num}}</p>
+                        <div class="del" @click="del(item)">删除</div>
                     </li>
                 </ul>
             </section>
             <footer>
-                <i class="iconfont icon-quanxuan"></i>
-                <p>合计：￥</p>
+                <i :class="['iconfont icon-quanxuan', checkAll?'active':'']" @click="changeAll"></i>
+                <p>合计：￥{{ totalPrice }}</p>
                 <div>去结算</div>
             </footer>
         </main>
@@ -43,9 +44,58 @@
         computed: {
             cartList() {
                 return this.$store.state.cartList
+            },
+            checkAll: {
+                get() {
+                    if (this.cartList.length == 0) {
+                        return false
+                    }
+                    // 获取一个bool值
+                    // true 或 false  取决于 购物车数组内每个商品的checked是否都为true
+                    let bool = this.cartList.every(item => {
+                        return item.checked == true
+                    })
+                    console.log(bool)
+                    return bool
+                },
+                set(newVal) {
+                    // 主动点击全选，所有商品都选中或都不选中， 视觉上实现，如果全选没有，那点一下，上面都选中
+                    this.cartList.forEach((item) => {
+                        item.checked = newVal
+                    })
+                }
+            },
+            totalPrice() {
+                let sum = 0;
+                this.cartList.forEach(item => {
+                    if (item.checked == true) {
+                        sum+=item.goods_price*item.goods_num
+                    }
+                })
+                return sum
             }
         },
         methods: {
+            jian(item) {
+                this.$store.dispatch("changeCartList", {
+                    goodsid: item.goodsid,
+                    checked: item.checked,
+                    type: 2
+                })
+            },
+            jia(item) {
+                this.$store.dispatch("changeCartList", {
+                    goodsid: item.goodsid,
+                    checked: item.checked,
+                    type: 1
+                })
+            },
+            // 点击全选
+            changeAll() {
+                // 假如此时checkAll 为 true，那则添加了active类
+                this.checkAll = !this.checkAll
+                // 计算属性的更改会触发set
+            },
             checkOne(item) {
                 console.log(item)
                 // 反推
@@ -56,6 +106,9 @@
                     goodsid: item.goodsid,
                     checked: !item.checked
                 })
+            },
+            del(item) {
+                this.$store.dispatch("delCart",item._id )
             }
         }
     }
@@ -67,6 +120,7 @@
     height 100%
     display flex
     flex-direction column
+    overflow hidden
     main 
         flex 1
         display flex
@@ -76,6 +130,17 @@
             li 
                 display flex
                 height px2rem(160px)
+                position relative
+                .del 
+                    width px2rem(90px)
+                    background color
+                    position absolute
+                    right px2rem(-90px)
+                    height 100%
+                    display flex
+                    align-items center
+                    justify-content center
+                    color #fff
                 i 
                     width px2rem(80px)
                     line-height px2rem(160px)
@@ -115,6 +180,8 @@
                 flex 1
             i 
                 font-size px2rem(50px)
+                &.active
+                    color color
             div 
                 background-color color
                 color #fff

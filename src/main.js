@@ -13,6 +13,7 @@ import "./util/flexible.js"
 import "./assets/base.styl"
 import "@/assets/fonts/iconfont.css"
 import "swiper/css/swiper.css"
+import "./directive/swiper.js"
 Vue.use(ElementUI);
 Vue.use(Vant);
 

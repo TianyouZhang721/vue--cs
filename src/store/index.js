@@ -34,9 +34,23 @@ export default new Vuex.Store({
             axios.post("/api/cartedit", {
                 userid: sessionStorage.getItem("id"),
                 goodsid: obj.goodsid,
-                checked:obj.checked,
+                checked: obj.checked,
+                type: obj.type
             }).then(res => {
                 console.log(res)
+                if (res.data.status == 1) {
+                    context.dispatch("getCartList")
+                }
+            })
+        },
+        delCart(context, id) {
+            axios.post("/api/cartdel", {
+                id: id
+            }).then(res => {
+                console.log(res)
+                if (res.data.status == 1) {
+                    context.dispatch("getCartList")
+                }
             })
         }
     }
