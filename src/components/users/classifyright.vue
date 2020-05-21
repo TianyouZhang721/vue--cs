@@ -4,7 +4,7 @@
             <li v-for="(item,index) in list[ind].children" :key="index" @click="goDetail(item._id)">
                 <div class="box">
                     <div class="img-box">
-                        <img :src="'http://localhost:3000' + item.imgurl" alt="">
+                        <img :src="item.imgurl ? 'http://localhost:3000' + item.imgurl : 'http://localhost:3000' + item.img" alt="">
                     </div>
                 </div>
                 <p> {{ item.title }}</p>
