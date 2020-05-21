@@ -36,7 +36,9 @@
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-          <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+          <el-popconfirm title="你确定删除此商品吗" @onConfirm="del(scope.row._id)">
+            <el-button type="danger" size="mini" slot="reference"  >删除</el-button>
+          </el-popconfirm>
         </template>
       </el-table-column>
     </el-table>
@@ -73,14 +75,10 @@
           </div>
           <img :src="imgurl" alt="">
         </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="onSubmit">立即添加</el-button>
-          <el-button>取消</el-button>
-        </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="sure">确 定</el-button>
+        <el-button type="primary"  @click="onSubmit">确 定</el-button>
       </span>
     </el-dialog>
    
@@ -107,10 +105,21 @@ export default {
           price: '',
           status: false
         },
-        cateArr: []
+        cateArr: [],
+        id: ""
     };
   },
   methods: {
+      del(id) {
+          this.$http.post("/api/goodsdel", {
+              id
+          }).then(res => {
+              console.log(res)
+              if(res.data.status == 1) {
+                this.getData()
+              }
+          })
+      },
     fileChange() {
       console.log("改变了")
       var file = this.$refs.file.files[0]
@@ -126,9 +135,19 @@ export default {
     },
     add() {
       this.dialogVisible = true;
+      this.title = "商品添加"
     },
     handleEdit(index, row) {
       console.log(index, row);
+      // 编辑
+      this.dialogVisible = true
+      this.title = "商品编辑"
+      this.form.title = row.title
+      this.form.cate = row.cate
+      this.form.price = row.price
+      this.form.status = row.status
+      this.imgurl = 'http://localhost:3000' + (row.imgurl || row.img)
+      this.id = row._id
     },
     handleDelete(index, row) {
       console.log(index, row);
@@ -148,13 +167,24 @@ export default {
       // console.log(form.get("title"))
       // 输出fomrdata对象什么都看不到
       // console.log(form)
-      this.$http.post("/api/goodsadd", form).then(res => {
-        console.log(res)
-        if(res.data.status == 1) {
-          this.dialogVisible = false;
-          this.getData()
-        }
-      })
+      if (this.title == '商品添加') {
+          this.$http.post("/api/goodsadd", form).then(res => {
+            console.log(res)
+            if(res.data.status == 1) {
+                this.dialogVisible = false;
+                this.getData()
+            }
+        })
+      } else if(this.title == '商品编辑') {
+          form.append("id", this.id)
+          this.$http.post("/api/goodsedit", form).then(res => {
+              console.log(res)
+              if(res.data.status == 1) {
+                this.dialogVisible = false;
+                this.getData()
+              }
+          })
+      }
     },
     sure() {},
     getData() {
@@ -180,27 +210,33 @@ td
         width: 100px;
         height: 100px;
   
-
-.box    
-    width 100px
-    height 100px
-    position relative
-    input 
-        width 100%
-        height 100%
-        position absolute
-        top 0
-        left 0
-        opacity 0
-        z-index 99
-    .add-box 
-        width 100%
-        height 100%
-        position absolute
-        top 0
-        left 0
-        border 1px dashed #333
-        font-size 50px
-        line-height 100px
-        text-align center
+.el-form-item__content 
+    display flex
+    img 
+        width 100px
+        height 100px
+        float left
+    .box    
+        width 100px
+        height 100px
+        position relative
+        float left
+        input 
+            width 100%
+            height 100%
+            position absolute
+            top 0
+            left 0
+            opacity 0
+            z-index 99
+        .add-box 
+            width 100%
+            height 100%
+            position absolute
+            top 0
+            left 0
+            border 1px dashed #333
+            font-size 50px
+            line-height 100px
+            text-align center
 </style>
