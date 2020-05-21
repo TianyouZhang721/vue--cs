@@ -14,6 +14,7 @@ import AdminUser from '@/pages/admin/adminuser'
 import Member from '@/pages/admin/member'
 import ProductManage from '@/pages/admin/productmanage'
 import ClassifyManage from '@/pages/admin/classifymanage'
+import AdminLogin from '@/pages/admin/adminlogin'
 Vue.use(Router)
 
 export default new Router({
@@ -61,6 +62,14 @@ export default new Router({
     {
       path: "/admin",
       component: Admin,
+      beforeEnter(to, from, next) {
+        if (sessionStorage.getItem("adminid")) {
+          
+          next()
+        } else {
+          next("/adminlogin")
+        }
+      },
       children: [
         {
           path: "home",
@@ -83,6 +92,10 @@ export default new Router({
           component: ProductManage
         }
       ]
+    },
+    {
+      path: "/adminlogin",
+      component: AdminLogin
     }
   ]
 })
