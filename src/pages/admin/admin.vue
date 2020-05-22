@@ -41,6 +41,7 @@
                   
                   <el-menu-item index="/admin/classifymanage">分类管理</el-menu-item>
                   <el-menu-item index="/admin/productmanage">商品管理</el-menu-item>
+                  <el-menu-item index="/admin/echarts">echarts</el-menu-item>
                 <!-- </el-menu-item-group> -->
               </el-submenu>
             </el-menu>

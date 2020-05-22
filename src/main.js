@@ -15,6 +15,8 @@ import "@/assets/fonts/iconfont.css"
 import "swiper/css/swiper.css"
 import "./directive/swiper.js"
 import "./filter/index"
+import echarts from 'echarts'
+Vue.prototype.$echarts = echarts
 Vue.use(ElementUI);
 Vue.use(Vant);
 

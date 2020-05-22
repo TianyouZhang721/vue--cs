@@ -15,6 +15,7 @@ import Member from '@/pages/admin/member'
 import ProductManage from '@/pages/admin/productmanage'
 import ClassifyManage from '@/pages/admin/classifymanage'
 import AdminLogin from '@/pages/admin/adminlogin'
+import Echart from '@/pages/admin/echart'
 Vue.use(Router)
 
 export default new Router({
@@ -74,6 +75,10 @@ export default new Router({
         {
           path: "home",
           component: AdminHome
+        },
+        {
+          path: "echarts",
+          component: Echart
         },
         {
           path: "adminuser",
